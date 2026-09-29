@@ -3,38 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Trombone Slide</title>
+  <title>Trombone Practice</title>
   <style>
-    body, html { margin: 0; padding: 0; height: 100%; font-family: sans-serif; background: #222; color: white; overflow: hidden; touch-action: none; }
-    #slide-area { width: 100%; height: 80vh; background: linear-gradient(#f1c40f, #e67e22); position: relative; }
-    .position-marker { width: 100%; height: 14.28%; border-bottom: 2px solid rgba(0,0,0,0.2); box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; color: rgba(0,0,0,0.5); }
-    #status { height: 20vh; display: flex; align-items: center; justify-content: center; font-size: 28px; background: #111; flex-direction: column; }
-    #start-btn { padding: 15px 30px; font-size: 20px; background: #e74c3c; border: none; border-radius: 10px; color: white; cursor: pointer; }
+    body, html { margin: 0; padding: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f0f13; color: white; overflow: hidden; touch-action: none; display: flex; flex-direction: column; }
+    header { height: 12vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #1a1a24; border-bottom: 2px solid #2a2a3c; }
+    h1 { margin: 0; font-size: 20px; color: #f1c40f; letter-spacing: 1px; }
+    #note-display { font-size: 16px; color: #a0a0b0; margin-top: 4px; }
+    #slide-track { flex: 1; position: relative; background: linear-gradient(180deg, #1e1e2f 0%, #12121c 100%); display: flex; flex-direction: column; justify-content: space-between; padding: 20px 0; box-sizing: border-box; }
+    .mark { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; box-sizing: border-box; color: rgba(255,255,255,0.3); font-weight: bold; font-size: 14px; border-top: 1px dashed rgba(255,255,255,0.08); }
+    .mark span:last-child { color: #f1c40f; font-size: 16px; }
+    #hand-marker { position: absolute; left: 10px; right: 10px; height: 50px; background: rgba(241, 196, 15, 0.2); border: 2px solid #f1c40f; border-radius: 8px; transform: translateY(-50%); pointer-events: none; display: none; align-items: center; justify-content: center; font-weight: bold; color: #f1c40f; backdrop-filter: blur(4px); }
+    #overlay { position: absolute; inset: 0; background: rgba(15,15,19,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; }
+    #start-btn { padding: 16px 36px; font-size: 20px; font-weight: bold; background: #f1c40f; border: none; border-radius: 30px; color: #111; cursor: pointer; box-shadow: 0 4px 20px rgba(241,196,15,0.4); }
   </style>
 </head>
 <body>
-  <div id="slide-area">
-    <div class="position-marker">1st (F)</div>
-    <div class="position-marker">2nd (E)</div>
-    <div class="position-marker">3rd (Eb)</div>
-    <div class="position-marker">4th (D)</div>
-    <div class="position-marker">5th (Db)</div>
-    <div class="position-marker">6th (C)</div>
-    <div class="position-marker">7th (B)</div>
+
+  <div id="overlay">
+    <button id="start-btn">Tap to Play</button>
   </div>
-  <div id="status">
-    <button id="start-btn">Tap to Start</button>
-    <div id="current-pos">Position: -</div>
+
+  <header>
+    <h1>TROMBONE SLIDE</h1>
+    <div id="note-display">Position: - | Note: -</div>
+  </header>
+
+  <div id="slide-track">
+    <div class="mark"><span>1st Position</span><span>F4</span></div>
+    <div class="mark"><span>2nd Position</span><span>E4</span></div>
+    <div class="mark"><span>3rd Position</span><span>Eb4</span></div>
+    <div class="mark"><span>4th Position</span><span>D4</span></div>
+    <div class="mark"><span>5th Position</span><span>Db4</span></div>
+    <div class="mark"><span>6th Position</span><span>C4</span></div>
+    <div class="mark"><span>7th Position</span><span>B3</span></div>
+    <div id="hand-marker">SLIDE</div>
   </div>
 
   <script>
-    const slideArea = document.getElementById('slide-area');
-    const posDisplay = document.getElementById('current-pos');
+    const track = document.getElementById('slide-track');
+    const noteDisplay = document.getElementById('note-display');
+    const overlay = document.getElementById('overlay');
     const startBtn = document.getElementById('start-btn');
-    let audioCtx, oscillator, gainNode;
+    const handMarker = document.getElementById('hand-marker');
 
-    // Frequencies moving down chromatically from F4 (1st pos) to B3 (7th pos)
-    const frequencies = [349.23, 329.63, 311.13, 293.66, 277.18, 261.63, 246.94];
+    let audioCtx, oscillator, gainNode;
+    
+    // Frequencies from 1st (high F4) to 7th (low B3)
+    const minFreq = 246.94; // B3 (7th)
+    const maxFreq = 349.23; // F4 (1st)
+    const notes = ["F4", "E4", "Eb4", "D4", "Db4", "C4", "B3"];
 
     startBtn.addEventListener('click', () => {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -43,33 +60,111 @@
       
       oscillator.type = 'sawtooth';
       oscillator.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
-      gainNode.gain.value = 0; 
-      oscillator.start();
+      gainNode.Here is an upgraded, much cleaner version of your code. 
+
+It features a sleek brass-and-dark UI, displays **real note names** instead of basic labels, and supports **both phone tilting/motion** (so you can literally slide your phone) and touch dragging!
+
+### Updated `index.html` Code
+Replace everything in your `index.html` file with this code:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Pocket Trombone</title>
+  <style>
+    body { margin: 0; background: #121212; color: #fff; font-family: system-ui, sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; touch-action: none; }
+    #header { text-align: center; padding: 15px; background: #1e1e1e; border-bottom: 2px solid #b7950b; }
+    h1 { margin: 0; font-size: 22px; color: #f1c40f; }
+    #trombone-track { flex: 1; position: relative; background: linear-gradient(135deg, #1a1a1a, #2c2c2c); border-left: 8px solid #b7950b; border-right: 8px solid #b7950b; margin: 20px; border-radius: 12px; overflow: hidden; }
+    .position-row { height: 14.28%; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: bold; font-size: 18px; color: #888; transition: background 0.1s; }
+    .position-row.active { background: rgba(241, 196, 15, 0.3); color: #f1c40f; font-size: 22px; }
+    #controls { padding: 20px; text-align: center; background: #1e1e1e; }
+    button { padding: 12px 24px; font-size: 18px; background: #f1c40f; border: none; border-radius: 8px; font-weight: bold; color: #121212; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <div id="header">
+    <h1>Trombone Practice</h1>
+    <div id="note-display" style="font-size: 14px; color: #aaa; margin-top: 5px;">Slide phone or drag screen</div>
+  </div>
+
+  <div id="trombone-track">
+    <div class="position-row" data-pos="1"><span>1st Position</span><span>F4</span></div>
+    <div class="position-row" data-pos="2"><span>2nd Position</span><span>E4</span></div>
+    <div class="position-row" data-pos="3"><span>3rd Position</span><span>E♭4</span></div>
+    <div class="position-row" data-pos="4"><span>4th Position</span><span>D4</span></div>
+    <div class="position-row" data-pos="5"><span>5th Position</span><span>D♭4</span></div>
+    <div class="position-row" data-pos="6"><span>6th Position</span><span>C4</span></div>
+    <div class="position-row" data-pos="7"><span>7th Position</span><span>B3</span></div>
+  </div>
+
+  <div id="controls">
+    <button id="start-btn">Enable Audio & Sensors</button>
+  </div>
+
+  <script>
+    const rows = document.querySelectorAll('.position-row');
+    const startBtn = document.getElementById('start-btn');
+    const noteDisplay = document.getElementById('note-display');
+    let audioCtx, osc, gainNode;
+    const frequencies = [349.23, 329.63, 311.13, 293.66, 277.18, 261.63, 246.94];
+    let currentPos = 0;
+
+    startBtn.addEventListener('click', async () => {
+      if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+        await DeviceMotionEvent.requestPermission();
+      }
       
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      osc = audioCtx.createOscillator();
+      gainNode = audioCtx.createGain();
+      
+      osc.type = 'sawtooth';
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      gainNode.gain.value = 0;
+      osc.start();
+
       startBtn.style.display = 'none';
+      noteDisplay.innerText = "Ready! Move phone or slide finger.";
+
+      window.addEventListener('devicemotion', (e) => {
+        let tilt = e.accelerationIncludingGravity.y || 0;
+        let pos = Math.floor(Math.abs(tilt) / 2);
+        updatePosition(Math.max(0, Math.min(6, pos)));
+      });
     });
 
-    function updatePosition(y) {
+    function updatePosition(index) {
       if (!audioCtx) return;
-      const rect = slideArea.getBoundingClientRect();
-      let relativeY = Math.max(0, Math.min(y - rect.top, rect.height - 1));
-      
-      const positionIndex = Math.floor((relativeY / rect.height) * 7);
-      
-      posDisplay.innerText = `Position: ${positionIndex + 1}`;
-      oscillator.frequency.setValueAtTime(frequencies[positionIndex], audioCtx.currentTime);
-      gainNode.gain.setTargetAtTime(0.5, audioCtx.currentTime, 0.05);
+      if (currentPos === index && gainNode.gain.value > 0) return;
+      currentPos = index;
+
+      rows.forEach((r, i) => r.classList.toggle('active', i === index));
+      osc.frequency.setValueAtTime(frequencies[index], audioCtx.currentTime);
+      gainNode.gain.setTargetAtTime(0.4, audioCtx.currentTime, 0.05);
+      noteDisplay.innerText = `Playing Position ${index + 1} (${rows[index].children[1].innerText})`;
     }
 
     function stopSound() {
       if (gainNode) gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.05);
-      posDisplay.innerText = `Position: -`;
+      rows.forEach(r => r.classList.remove('active'));
+      noteDisplay.innerText = "Paused";
     }
 
-    slideArea.addEventListener('touchstart', (e) => { e.preventDefault(); updatePosition(e.touches[0].clientY); });
-    slideArea.addEventListener('touchmove', (e) => { e.preventDefault(); updatePosition(e.touches[0].clientY); });
-    slideArea.addEventListener('touchend', stopSound);
+    const track = document.getElementById('trombone-track');
+    track.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const rect = track.getBoundingClientRect();
+      let y = e.touches[0].clientY - rect.top;
+      let pos = Math.floor((y / rect.height) * 7);
+      updatePosition(Math.max(0, Math.min(6, pos)));
+    });
+    track.addEventListener('touchend', stopSound);
   </script>
 </body>
 </html>
